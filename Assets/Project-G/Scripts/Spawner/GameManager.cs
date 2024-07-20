@@ -6,9 +6,9 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // 에디터 모드에서는 play 모드를 중지합니다.
+        UnityEditor.EditorApplication.ExitPlaymode();
 #else
-        Application.Quit(); // 빌드된 애플리케이션에서는 애플리케이션을 종료합니다.
+        Application.Quit();
 #endif
     }
 }

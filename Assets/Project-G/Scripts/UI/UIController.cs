@@ -42,7 +42,8 @@ public class UIController : MonoBehaviour
 	private void Awake()
 	{
 		// 처음 씬이 시작되어 Main UI가 활성화 상태일 때 최고 등급 불러오기
-		textMainGrade.text = PlayerPrefs.GetString("HIGHGRADE");
+		//textMainGrade.text = PlayerPrefs.GetString("HIGHGRADE");
+
 	}
 
 	public void GameStart()
@@ -83,7 +84,7 @@ public class UIController : MonoBehaviour
 
 	private void Update()
 	{
-		textScore.text = gameController.CurrentScore.ToString("F0");
+		//textScore.text = gameController.CurrentScore.ToString("F0");
 	}
 
 	private void CalculateGradeAndTalk(int score)
