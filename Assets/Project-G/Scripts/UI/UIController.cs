@@ -4,135 +4,161 @@ using TMPro;
 
 public class UIController : MonoBehaviour
 {
-	[SerializeField]
-	private GameController gameController;
+    public static UIController instance = null;
+    [SerializeField]
+    public GameController gameController;
 
-	[Header("Main UI")]
-	[SerializeField]
-	private GameObject mainPanel;
-	[SerializeField]
-	private TextMeshProUGUI textMainGrade;
+    [Header("Main UI")]
+    [SerializeField]
+    private GameObject mainPanel;
+    [SerializeField]
+    private TextMeshProUGUI textMainGrade;
+    [SerializeField]
+    private GameObject DescriptionPanel;
 
-	[Header("Game UI")]
-	[SerializeField]
-	private GameObject gamePanel;
-	[SerializeField]
-	private TextMeshProUGUI textScore;
+    [Header("Game UI")]
+    [SerializeField]
+    private GameObject gamePanel;
+    [SerializeField]
+    private TextMeshProUGUI textScore;
 
-	[Header("Result UI")]
-	[SerializeField]
-	private GameObject resultPanel;
-	[SerializeField]
-	private TextMeshProUGUI textResultScore;
-	[SerializeField]
-	private TextMeshProUGUI textResultGrade;
-	[SerializeField]
-	private TextMeshProUGUI textResultTalk;
-	[SerializeField]
-	private TextMeshProUGUI textResultHighScore;
+    [Header("Result UI")]
+    [SerializeField]
+    private GameObject resultPanel;
+    [SerializeField]
+    private TextMeshProUGUI textResultScore;
+    [SerializeField]
+    private TextMeshProUGUI textResultGrade;
+    [SerializeField]
+    private TextMeshProUGUI textResultTalk;
+    [SerializeField]
+    private TextMeshProUGUI textResultHighScore;
 
-	[Header("Result UI Animation")]
-	[SerializeField]
-	private ScaleEffect effectGameOver;
-	[SerializeField]
-	private CountingEffect effectResultScore;
-	[SerializeField]
-	private FadeEffect effectResultGrade;
+    [Header("Result UI Animation")]
+    [SerializeField]
+    private ScaleEffect effectGameOver;
+    [SerializeField]
+    private CountingEffect effectResultScore;
+    [SerializeField]
+    private FadeEffect effectResultGrade;
 
-	private void Awake()
-	{
-		// 처음 씬이 시작되어 Main UI가 활성화 상태일 때 최고 등급 불러오기
-		textMainGrade.text = PlayerPrefs.GetString("HIGHGRADE");
-	}
+    private void Awake()
+    {
+        // 싱글턴 패턴 설정
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
 
-	public void GameStart()
-	{
-		mainPanel.SetActive(false);
-		gamePanel.SetActive(true);
-	}
+        // 처음 씬이 시작되어 Main UI가 활성화 상태일 때 최고 등급 불러오기
+        textMainGrade.text = PlayerPrefs.GetString("HIGHGRADE");
+    }
 
-	public void GameOver()
-	{
-		int currentScore = (int)gameController.CurrentScore;
+    public void GameStart()
+    {
+        mainPanel.SetActive(false);
+        gamePanel.SetActive(true);
+    }
 
-		// 현재 등급 출력, 현재 등급에 해당하는 고박사의 대사 출력
-		CalculateGradeAndTalk(currentScore);
-		// 최고 점수 출력
-		CalculateHighScore(currentScore);
+    public void GameOver()
+    {
+        int currentScore = (int)gameController.CurrentScore;
 
-		gamePanel.SetActive(false);
-		resultPanel.SetActive(true);
+        // 현재 등급 출력, 현재 등급에 해당하는 고박사의 대사 출력
+        CalculateGradeAndTalk(currentScore);
+        // 최고 점수 출력
+        CalculateHighScore(currentScore);
 
-		// "게임오버" 텍스트 크기 축소 애니메이션
-		effectGameOver.Play(50, 177);
-		// 현재 점수를 0부터 카운팅하는 애니메이션
-		// 카운팅 애니메이션 종료 후 등급 Fade In 애니메이션 재생
-		effectResultScore.Play(0, currentScore, effectResultGrade.FadeIn);
-	}
+        gamePanel.SetActive(false);
+        resultPanel.SetActive(true);
 
-	public void GoToMainMenu()
-	{
-		// 플레이어 위치, 점수, 체력 등 초기화할 게 많기 때문에 그냥 현재씬을 다시 로드..
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-	}
+        // "게임오버" 텍스트 크기 축소 애니메이션
+        effectGameOver.Play(50, 177);
+        // 현재 점수를 0부터 카운팅하는 애니메이션
+        // 카운팅 애니메이션 종료 후 등급 Fade In 애니메이션 재생
+        effectResultScore.Play(0, currentScore, effectResultGrade.FadeIn);
+    }
 
-	public void GoToYoutube()
-	{
-		Application.OpenURL("https://www.youtube.com/@unitynote");
-	}
+    public void GoToMainMenu()
+    {
+        // 플레이어 위치, 점수, 체력 등 초기화할 게 많기 때문에 그냥 현재씬을 다시 로드..
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
-	private void Update()
-	{
-		textScore.text = gameController.CurrentScore.ToString("F0");
-	}
+    public void GoToYoutube()
+    {
+        Application.OpenURL("https://www.youtube.com/@unitynote");
+    }
 
-	private void CalculateGradeAndTalk(int score)
-	{
-		if (score < 2000)
-		{
-			textResultGrade.text = "F";
-			textResultTalk.text = "좀 더\n노력해봅시다!";
-		}
-		else if (score < 3000)
-		{
-			textResultGrade.text = "D";
-			textResultTalk.text = "수강성공!";
-		}
-		else if (score < 4000)
-		{
-			textResultGrade.text = "C";
-			textResultTalk.text = "발전하는 모습이\n보입니다!";
-		}
-		else if (score < 5000)
-		{
-			textResultGrade.text = "B";
-			textResultTalk.text = "A가 멀지\n않았습니다!";
-		}
-		else
-		{
-			textResultGrade.text = "A";
-			textResultTalk.text = "유니티를\n마스터하는\n그날까지!";
-		}
-	}
+    private void Update()
+    {
+        textScore.text = gameController.CurrentScore.ToString("F0");
+        Description_Close();
+    }
 
-	private void CalculateHighScore(int score)
-	{
-		int highScore = PlayerPrefs.GetInt("HIGHSCORE");
+    public void CalculateGradeAndTalk(int score)
+    {
+        if (score < 2000)
+        {
+            textResultGrade.text = "F";
+            textResultTalk.text = "좀 더\n노력해봅시다!";
+        }
+        else if (score < 3000)
+        {
+            textResultGrade.text = "D";
+            textResultTalk.text = "수강성공!";
+        }
+        else if (score < 4000)
+        {
+            textResultGrade.text = "C";
+            textResultTalk.text = "발전하는 모습이\n보입니다!";
+        }
+        else if (score < 5000)
+        {
+            textResultGrade.text = "B";
+            textResultTalk.text = "A가 멀지\n않았습니다!";
+        }
+        else
+        {
+            textResultGrade.text = "A";
+            textResultTalk.text = "유니티를\n마스터하는\n그날까지!";
+        }
+    }
 
-		// 최고 점수보다 높은 점수를 획득했을 때
-		if (score > highScore)
-		{
-			// 최고 등급 갱신
-			PlayerPrefs.SetString("HIGHGRADE", textResultGrade.text);
-			// 최고 점수 갱신
-			PlayerPrefs.SetInt("HIGHSCORE", score);
+    private void CalculateHighScore(int score)
+    {
+        int highScore = PlayerPrefs.GetInt("HIGHSCORE");
 
-			textResultHighScore.text = score.ToString();
-		}
-		else
-		{
-			textResultHighScore.text = highScore.ToString();
-		}
-	}
+        // 최고 점수보다 높은 점수를 획득했을 때
+        if (score > highScore)
+        {
+            // 최고 등급 갱신
+            PlayerPrefs.SetString("HIGHGRADE", textResultGrade.text);
+            // 최고 점수 갱신
+            PlayerPrefs.SetInt("HIGHSCORE", score);
+
+            textResultHighScore.text = score.ToString();
+        }
+        else
+        {
+            textResultHighScore.text = highScore.ToString();
+        }
+    }
+
+    public void Description_Open()
+    {
+        DescriptionPanel.SetActive(true);
+    }
+
+    public void Description_Close()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && DescriptionPanel.activeSelf)
+        {
+            DescriptionPanel.SetActive(false);
+        }
+    }
 }
-
