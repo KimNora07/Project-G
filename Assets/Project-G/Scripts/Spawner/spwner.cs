@@ -24,7 +24,7 @@ public class spwner : MonoBehaviour
     {
         while (true)
         {
-            var angle = Random.RandomRange(0f, 360f) * Mathf.Deg2Rad;
+            var angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
             var dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 
             var spawnPos = dir * 10;
