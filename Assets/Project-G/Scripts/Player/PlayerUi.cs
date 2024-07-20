@@ -109,25 +109,25 @@ public class PlayerUi : MonoBehaviour
             frontGageBar.fillAmount = Mathf.Lerp(gageFillFront, backGageBar.fillAmount, percentComplete);
         }
 
-        float hpFillFront = frontGageBar.fillAmount;
-        float hpFillBack = backGageBar.fillAmount;
+        float hpFillFront = frontHealthBar.fillAmount;
+        float hpFillBack = backHealthBar.fillAmount;
 
-        float hpFraction = currentGage / maxGage;
+        float hpFraction = currentHealth / maxHealth;
 
         if (hpFillBack > hpFraction)
         {
-            frontGageBar.fillAmount = hpFraction;
+            frontHealthBar.fillAmount = hpFraction;
             lerpTimer += Time.deltaTime;
             float percentComplete = lerpTimer / hplerpSpeed;
-            backGageBar.fillAmount = Mathf.Lerp(hpFillBack, hpFraction, percentComplete);
+            backHealthBar.fillAmount = Mathf.Lerp(hpFillBack, hpFraction, percentComplete);
         }
 
         if (hpFillFront < hpFraction)
         {
-            backGageBar.fillAmount = hpFraction;
+            backHealthBar.fillAmount = hpFraction;
             lerpTimer += Time.deltaTime;
             float percentComplete = lerpTimer / hplerpSpeed;
-            frontGageBar.fillAmount = Mathf.Lerp(hpFillFront, backGageBar.fillAmount, percentComplete);
+            frontHealthBar.fillAmount = Mathf.Lerp(hpFillFront, backHealthBar.fillAmount, percentComplete);
         }
     }
 
@@ -161,4 +161,8 @@ public class PlayerUi : MonoBehaviour
         currentHealth -= value;
     }
 
+    public void Healed(float value)
+    {
+        currentHealth += value;
+    }
 }

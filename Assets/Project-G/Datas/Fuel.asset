@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Fuel
   m_EditorClassIdentifier: 
   skillName: Fuel
-  skillCoolTime: 30
+  skillCoolTime: 10
   skillIcon: {fileID: 21300000, guid: 196cf96c61ceed242be7a13947cf1413, type: 3}

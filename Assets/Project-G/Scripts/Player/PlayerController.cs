@@ -44,6 +44,10 @@ public class PlayerController : MonoBehaviour
             }
             else if (Input.GetKey(KeyCode.Space))
             {
+                foreach (var particle in zPackBoostParticle)
+                {
+                    particle.Play();
+                }
                 Movement2D.MoveTo(arrowPos.position, true);
                 playerUi.TickGage(5, false);
             }
@@ -72,4 +76,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Meteor"))
+        {
+            playerUi.Damaged(10f);
+            Destroy(collision.gameObject);
+        }
+    }
 }
