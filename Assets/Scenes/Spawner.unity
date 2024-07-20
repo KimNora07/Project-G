@@ -421,7 +421,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageData: {fileID: 11400000, guid: 7977c1b0ad80ad4468ff8870fd7b7b78, type: 2}
   alertLinePregab: {fileID: 0}
-  meteoritePregab: {fileID: 5091991123832527646, guid: 2345ec82f50ffed4fb5d37c7247d3817, type: 3}
+  meteoritePrefabs:
+  - {fileID: 5091991123832527646, guid: ff3535ceb7cdc3a41942a55348ddabb3, type: 3}
+  - {fileID: 5091991123832527646, guid: c0cbfc3dc826c654abfeceb338c45cde, type: 3}
+  - {fileID: 5091991123832527646, guid: 63497d2b86e5d49438713a985376b63d, type: 3}
+  - {fileID: 5091991123832527646, guid: 2345ec82f50ffed4fb5d37c7247d3817, type: 3}
   minSpawnTime: 1
   maxSpawnTime: 3
 --- !u!4 &1971182534
@@ -433,7 +437,7 @@ Transform:
   m_GameObject: {fileID: 1971182532}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.23, y: -0.71, z: -0.01685876}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -1,23 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
-public class spwner : MonoBehaviour
+
+public class Spawner : MonoBehaviour
 {
     [SerializeField]
     private stageData stageData;
     [SerializeField]
-    private GameObject alertLinePregab;
+    private GameObject alertLinePrefab;
     [SerializeField]
-    private GameObject meteoritePregab;
+    private GameObject[] meteoritePrefabs; // 여러 종류의 적 프리팹을 저장할 배열
     [SerializeField]
     private float minSpawnTime = 0.2f;
     [SerializeField]
     private float maxSpawnTime = 1.5f;
 
+    private float currentMinSpawnTime;
+    private float currentMaxSpawnTime;
+
+    private UIController uiController;
+
     private void Awake()
     {
-        StartCoroutine("SpawnMeteorite");
+        uiController = UIController.instance;
+        currentMinSpawnTime = minSpawnTime;
+        currentMaxSpawnTime = maxSpawnTime;
+        StartCoroutine(SpawnMeteorite());
+    }
+
+    private void Update()
+    {
+        AdjustSpawnTimeBasedOnScore();
     }
 
     private IEnumerator SpawnMeteorite()
@@ -27,28 +40,53 @@ public class spwner : MonoBehaviour
             var angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
             var dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 
-            var spawnPos = dir * 10;
-            var meteor = Instantiate(meteoritePregab, spawnPos, Quaternion.identity).GetComponent<movement>();
+            Vector2 curPos = this.transform.position;
+            var spawnPos = curPos + dir * 10;
+
+            // 랜덤한 적 프리팹 선택
+            var randomIndex = Random.Range(0, meteoritePrefabs.Length);
+            var selectedPrefab = meteoritePrefabs[randomIndex];
+
+            var meteor = Instantiate(selectedPrefab, spawnPos, Quaternion.identity).GetComponent<movement>();
+            float meteorAngle = AngleBetweenPoints(meteor.gameObject.transform.position, this.transform.position);
+            meteorAngle += 90;
+            var targetRotation = Quaternion.Euler(new Vector3(0f, 0f, meteorAngle));
+            meteor.transform.rotation = targetRotation;
             meteor.MoveTo(-dir);
 
-
-            //float pisutionX = Random.Range(stageData.LimitMin.x, stageData.LimitMax.x);
-           // Vector3 meteoritePosition = new Vector3(pisutionX, stageData.LimitMax.y + 1.0f, 0);
-            //Instantiate(meteoritePregab, meteoritePosition, Quaternion.identity);
-            float spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
+            float spawnTime = Random.Range(currentMinSpawnTime, currentMaxSpawnTime);
             yield return new WaitForSeconds(spawnTime);
         }
-
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-
     }
 
-    // Update is called once per frame
-    void Update()
+    private void AdjustSpawnTimeBasedOnScore()
     {
+        int score = (int)uiController.gameController.CurrentScore;
 
+        if (score > 50)
+        {
+            currentMinSpawnTime = minSpawnTime * 0.8f;
+            currentMaxSpawnTime = maxSpawnTime * 0.8f;
+        }
+        else if (score > 100)
+        {
+            currentMinSpawnTime = minSpawnTime * 0.6f;
+            currentMaxSpawnTime = maxSpawnTime * 0.6f;
+        }
+        else if (score > 150)
+        {
+            currentMinSpawnTime = minSpawnTime * 0.4f;
+            currentMaxSpawnTime = maxSpawnTime * 0.4f;
+        }
+        else
+        {
+            currentMinSpawnTime = minSpawnTime;
+            currentMaxSpawnTime = maxSpawnTime;
+        }
+    }
+
+    private float AngleBetweenPoints(Vector2 a, Vector2 b)
+    {
+        return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
     }
 }
