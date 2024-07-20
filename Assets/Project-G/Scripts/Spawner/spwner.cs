@@ -5,10 +5,6 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField]
-    private stageData stageData;
-    [SerializeField]
-    private GameObject alertLinePrefab;
-    [SerializeField]
     private GameObject[] meteoritePrefabs; // 여러 종류의 적 프리팹을 저장할 배열
     [SerializeField]
     private float minSpawnTime = 0.2f;
@@ -18,11 +14,10 @@ public class Spawner : MonoBehaviour
     private float currentMinSpawnTime;
     private float currentMaxSpawnTime;
 
-    private UIController uiController;
+    public PlayerUi playerUi;
 
     private void Awake()
     {
-        uiController = UIController.instance;
         currentMinSpawnTime = minSpawnTime;
         currentMaxSpawnTime = maxSpawnTime;
         StartCoroutine(SpawnMeteorite());
@@ -61,19 +56,19 @@ public class Spawner : MonoBehaviour
 
     private void AdjustSpawnTimeBasedOnScore()
     {
-        int score = (int)uiController.gameController.CurrentScore;
+        int score = playerUi.score;
 
-        if (score > 50)
+        if (score > 100)
         {
             currentMinSpawnTime = minSpawnTime * 0.8f;
             currentMaxSpawnTime = maxSpawnTime * 0.8f;
         }
-        else if (score > 100)
+        else if (score > 500)
         {
             currentMinSpawnTime = minSpawnTime * 0.6f;
             currentMaxSpawnTime = maxSpawnTime * 0.6f;
         }
-        else if (score > 150)
+        else if (score > 1000)
         {
             currentMinSpawnTime = minSpawnTime * 0.4f;
             currentMaxSpawnTime = maxSpawnTime * 0.4f;

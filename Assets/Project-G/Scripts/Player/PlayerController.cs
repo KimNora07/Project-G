@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool isAttack = false;
-
     private Movement2D Movement2D;
 
     public Transform arrowPos;
@@ -16,6 +13,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotSpeed;
 
     [SerializeField] private ParticleSystem[] zPackBoostParticle;
+
+    public PlayerUi playerUi;
 
     private void Start()
     {
@@ -31,50 +30,58 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("ZPackBreakMeteor"))
-        {
-            isAttack = true;
-            StartCoroutine(WaifTime());
-        }
-    }
-
     private void Move()
     {
-
-        if(Input.GetKeyDown(KeyCode.Space) && !isAttack)
+        if (playerUi.state == PlayerState.GageLeft) 
         {
-            foreach (var particle in zPackBoostParticle)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-
-
-                particle.Play();
+                foreach (var particle in zPackBoostParticle)
+                {
+                    particle.Play();
+                }
+                playerUi.TickGage(5, false);
+            }
+            else if (Input.GetKey(KeyCode.Space))
+            {
+                foreach (var particle in zPackBoostParticle)
+                {
+                    particle.Play();
+                }
+                Movement2D.MoveTo(arrowPos.position, true);
+                playerUi.TickGage(5, false);
+            }
+            else if (Input.GetKeyUp(KeyCode.Space))
+            {
+                foreach (var particle in zPackBoostParticle)
+                {
+                    particle.Stop();
+                }
+                Movement2D.MoveTo(arrowPos.position, false);
+            }
+            else
+            {
+                playerUi.TickGage(0.5f, true);
             }
         }
-
-        if (Input.GetKey(KeyCode.Space) && !isAttack!)
+        else
         {
-            
+            playerUi.TickGage(0.5f, true);
+            Movement2D.MoveTo(arrowPos.position, false);
 
-            Movement2D.MoveTo(arrowPos.position, true);
-        }
-
-        if(Input.GetKeyUp(KeyCode.Space) && !isAttack)
-        {
             foreach (var particle in zPackBoostParticle)
             {
                 particle.Stop();
             }
-            Movement2D.MoveTo(arrowPos.position, false);
-        }        
+        }
     }
 
-    private IEnumerator WaifTime()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        yield return new WaitForSeconds(3f);
-
-        isAttack = true;
+        if (collision.CompareTag("Meteor"))
+        {
+            playerUi.Damaged(10f);
+            Destroy(collision.gameObject);
+        }
     }
-
 }
