@@ -7,8 +7,6 @@ public class GameController : MonoBehaviour
 	[SerializeField]
 	//private	GameObject		pattern01;
 
-	private readonly float scoreScale = 20;     // 점수 증가 계수 (읽기전용)
-
 	// 플레이어 점수 (죽지않고 버틴 시간)
 	public float CurrentScore { private set; get; } = 0;
 
@@ -16,9 +14,7 @@ public class GameController : MonoBehaviour
 
 	public void GameStart()
 	{
-		uiController.GameStart();
 
-		IsGamePlay = true;
 	}
 
 	public void GameExit()
@@ -33,15 +29,6 @@ public class GameController : MonoBehaviour
 	public void GameOver()
 	{
 		uiController.GameOver();
-
-		IsGamePlay = false;
-	}
-
-	private void Update()
-	{
-		if (IsGamePlay == false) return;
-
-		CurrentScore += Time.deltaTime * scoreScale;
 	}
 }
 

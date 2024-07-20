@@ -11,11 +11,19 @@ public class movement : MonoBehaviour
     [SerializeField]
     private Vector3 moveDirection = Vector3.zero;
 
+
+    public ParticleSystem bomb;
     public MateorState state;
+
+    private void Start()
+    {
+        bomb.gameObject.SetActive(false);
+    }
 
     private void Update()
     {
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        if (GameManager.Instance.gameState == GameState.InGame)
+            transform.position += moveDirection * moveSpeed * Time.deltaTime;
     }
 
     public void MoveTo(Vector3 diretion)
@@ -37,6 +45,12 @@ public class movement : MonoBehaviour
                     break;
             }
         }
+
+        if (collision.CompareTag("Player"))
+        {
+            bomb.gameObject.SetActive(true);
+            bomb.Play();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -51,4 +65,6 @@ public class movement : MonoBehaviour
             }
         }
     }
+
+
 }

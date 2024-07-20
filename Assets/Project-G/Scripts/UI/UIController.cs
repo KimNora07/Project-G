@@ -5,22 +5,12 @@ using TMPro;
 public class UIController : MonoBehaviour
 {
     public static UIController instance = null;
-    [SerializeField]
-    public GameController gameController;
 
     [Header("Main UI")]
     [SerializeField]
     private GameObject mainPanel;
     [SerializeField]
     private TextMeshProUGUI textMainGrade;
-    [SerializeField]
-    private GameObject DescriptionPanel;
-
-    [Header("Game UI")]
-    [SerializeField]
-    private GameObject gamePanel;
-    [SerializeField]
-    private TextMeshProUGUI textScore;
 
     [Header("Result UI")]
     [SerializeField]
@@ -42,6 +32,8 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private FadeEffect effectResultGrade;
 
+    public PlayerUi playerUi;
+
     private void Awake()
     {
         // 싱글턴 패턴 설정
@@ -58,22 +50,15 @@ public class UIController : MonoBehaviour
         textMainGrade.text = PlayerPrefs.GetString("HIGHGRADE");
     }
 
-    public void GameStart()
-    {
-        mainPanel.SetActive(false);
-        gamePanel.SetActive(true);
-    }
-
     public void GameOver()
     {
-        int currentScore = (int)gameController.CurrentScore;
+        int currentScore = playerUi.score;
 
         // 현재 등급 출력, 현재 등급에 해당하는 고박사의 대사 출력
         CalculateGradeAndTalk(currentScore);
         // 최고 점수 출력
         CalculateHighScore(currentScore);
 
-        gamePanel.SetActive(false);
         resultPanel.SetActive(true);
 
         // "게임오버" 텍스트 크기 축소 애니메이션
@@ -92,12 +77,6 @@ public class UIController : MonoBehaviour
     public void GoToYoutube()
     {
         Application.OpenURL("https://www.youtube.com/@unitynote");
-    }
-
-    private void Update()
-    {
-        textScore.text = gameController.CurrentScore.ToString("F0");
-        Description_Close();
     }
 
     public void CalculateGradeAndTalk(int score)
@@ -146,19 +125,6 @@ public class UIController : MonoBehaviour
         else
         {
             textResultHighScore.text = highScore.ToString();
-        }
-    }
-
-    public void Description_Open()
-    {
-        DescriptionPanel.SetActive(true);
-    }
-
-    public void Description_Close()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape) && DescriptionPanel.activeSelf)
-        {
-            DescriptionPanel.SetActive(false);
         }
     }
 }
