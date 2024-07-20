@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 8877159654456895893}
   - component: {fileID: 4610951403972521237}
   - component: {fileID: 6127908240288130726}
+  - component: {fileID: 784592588301467683}
   - component: {fileID: 2749297956952408537}
   - component: {fileID: -778696331014166125}
   m_Layer: 0
-  m_Name: Metero
+  m_Name: KnockBack Metero
   m_TagString: Meteor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,6 +102,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   moveDirection: {x: -1, y: -1, z: 0}
+--- !u!114 &784592588301467683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5091991123832527646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d400ad14441bd0a41a85af76fc276e7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockBackForce: 5
+  knockBackDuration: 0.5
 --- !u!58 &2749297956952408537
 CircleCollider2D:
   m_ObjectHideFlags: 0

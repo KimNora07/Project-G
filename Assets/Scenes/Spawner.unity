@@ -403,7 +403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageData: {fileID: 11400000, guid: 7977c1b0ad80ad4468ff8870fd7b7b78, type: 2}
   alertLinePregab: {fileID: 0}
-  meteoritePregab: {fileID: 5091991123832527646, guid: 63497d2b86e5d49438713a985376b63d, type: 3}
+  meteoritePregab: {fileID: 5091991123832527646, guid: ff3535ceb7cdc3a41942a55348ddabb3, type: 3}
   minSpawnTime: 1
   maxSpawnTime: 3
 --- !u!4 &1971182534
