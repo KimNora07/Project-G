@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 1965245208}
   - component: {fileID: 1965245211}
   - component: {fileID: 1965245210}
+  - component: {fileID: 1965245212}
   m_Layer: 0
   m_Name: Square
   m_TagString: Player
@@ -372,6 +373,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1965245212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965245207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16075502b13c9a6468c4d7511179ebba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAttack: 0
+  arrowPos: {fileID: 0}
+  newArrowPos: {x: 0, y: 0, z: 0}
+  rotSpeed: 0
+  zPackBoostParticle: []
 --- !u!1 &1971182532
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,7 +421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageData: {fileID: 11400000, guid: 7977c1b0ad80ad4468ff8870fd7b7b78, type: 2}
   alertLinePregab: {fileID: 0}
-  meteoritePregab: {fileID: 5091991123832527646, guid: ff3535ceb7cdc3a41942a55348ddabb3, type: 3}
+  meteoritePregab: {fileID: 5091991123832527646, guid: 2345ec82f50ffed4fb5d37c7247d3817, type: 3}
   minSpawnTime: 1
   maxSpawnTime: 3
 --- !u!4 &1971182534

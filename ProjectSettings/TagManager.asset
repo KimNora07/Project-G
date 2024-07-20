@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - Meteor
+  - ZPackBreakMeteor
   layers:
   - Default
   - TransparentFX
