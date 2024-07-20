@@ -13,6 +13,8 @@ public class Movement2D : MonoBehaviour
     [SerializeField] private Vector3 moveDir = Vector3.zero;
     [SerializeField] private Transform currentDir;
 
+    [SerializeField] private PlayerUi playerUi;
+
     //private Rigidbody2D rb;
 
     private void Start()
@@ -38,12 +40,15 @@ public class Movement2D : MonoBehaviour
             case true: moveDir = dir - transform.position; break;
         }
 
-        float angle = AngleBetweenPoints(this.transform.position, currentDir.position);
+        if (playerUi.state == PlayerState.GageLeft)
+        {
+            float angle = AngleBetweenPoints(this.transform.position, currentDir.position);
 
-        angle += 90;
+            angle += 90;
 
-        var targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
+            var targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
+        }
 
         moveDir.Normalize();
     }

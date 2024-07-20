@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +13,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotSpeed;
 
     [SerializeField] private ParticleSystem[] zPackBoostParticle;
+
+    public PlayerUi playerUi;
 
     private void Start()
     {
@@ -31,32 +32,44 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (playerUi.state == PlayerState.GageLeft) 
         {
-            foreach (var particle in zPackBoostParticle)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-
-
-                particle.Play();
+                foreach (var particle in zPackBoostParticle)
+                {
+                    particle.Play();
+                }
+                playerUi.TickGage(5, false);
+            }
+            else if (Input.GetKey(KeyCode.Space))
+            {
+                Movement2D.MoveTo(arrowPos.position, true);
+                playerUi.TickGage(5, false);
+            }
+            else if (Input.GetKeyUp(KeyCode.Space))
+            {
+                foreach (var particle in zPackBoostParticle)
+                {
+                    particle.Stop();
+                }
+                Movement2D.MoveTo(arrowPos.position, false);
+            }
+            else
+            {
+                playerUi.TickGage(0.5f, true);
             }
         }
-
-        if (Input.GetKey(KeyCode.Space))
+        else
         {
-            
+            playerUi.TickGage(0.5f, true);
+            Movement2D.MoveTo(arrowPos.position, false);
 
-            Movement2D.MoveTo(arrowPos.position, true);
-        }
-
-        if(Input.GetKeyUp(KeyCode.Space))
-        {
             foreach (var particle in zPackBoostParticle)
             {
                 particle.Stop();
             }
-            Movement2D.MoveTo(arrowPos.position, false);
-        }        
+        }
     }
 
 }

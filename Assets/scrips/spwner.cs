@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 public class spwner : MonoBehaviour
@@ -24,11 +25,17 @@ public class spwner : MonoBehaviour
     {
         while (true)
         {
-            var angle = Random.RandomRange(0f, 360f) * Mathf.Deg2Rad;
+            var angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
             var dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 
-            var spawnPos = dir * 10;
+            
+            Vector2 curPos = this.transform.position;
+            var spawnPos = curPos + dir * 10;
             var meteor = Instantiate(meteoritePregab, spawnPos, Quaternion.identity).GetComponent<movement>();
+            float meteorAngle = AngleBetweenPoints(meteor.gameObject.transform.position, this.transform.position);
+            meteorAngle += 90;
+            var targetRotation = Quaternion.Euler(new Vector3(0f, 0f, meteorAngle));
+            meteor.transform.rotation = targetRotation;
             meteor.MoveTo(-dir);
 
 
@@ -40,15 +47,8 @@ public class spwner : MonoBehaviour
         }
 
     }
-    // Start is called before the first frame update
-    void Start()
+    private float AngleBetweenPoints(Vector2 a, Vector2 b)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
     }
 }
