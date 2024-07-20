@@ -48,42 +48,52 @@ public class PlayerUi : MonoBehaviour
         {
             inventory.slots[i].Init();
         }
+        
+    }
+
+    public void StartGetScore()
+    {
         StartCoroutine(GetScore());
     }
 
     private void Update()
     {
-        currentGage = Mathf.Clamp(currentGage, 0, maxGage);
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        if (GameManager.Instance.gameState == GameState.InGame)
+        {
+            currentGage = Mathf.Clamp(currentGage, 0, maxGage);
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        if(currentGage <= 0)
-        {
-            state = PlayerState.NoGageLeft;
-        }
-        else
-        {
-            state = PlayerState.GageLeft;
-        }
+            if (currentGage <= 0)
+            {
+                state = PlayerState.NoGageLeft;
+            }
+            else
+            {
+                state = PlayerState.GageLeft;
+            }
 
-        if(currentHealth <= 0)
-        {
-            state = PlayerState.Die;
-        }
+            if (currentHealth <= 0)
+            {
+                state = PlayerState.Die;
+                UIManager.Instance.GameOver();
+            }
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            inventory.SlotChange();
-        }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                inventory.SlotChange();
+            }
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            inventory.UseSkill();
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                inventory.UseSkill();
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        UpdateOreStateUI();
+        if (GameManager.Instance.gameState == GameState.InGame)
+            UpdateOreStateUI();
     }
 
     public void UpdateOreStateUI()

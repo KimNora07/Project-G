@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
 
     public PlayerUi playerUi;
 
+    public CameraShake cameraShake;
+
     private void Start()
     {
         foreach (var particle in zPackBoostParticle)
@@ -27,7 +29,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        Move();
+        if (GameManager.Instance.gameState == GameState.InGame)
+        {
+            Move();
+        }
     }
 
     private void Move()
@@ -81,7 +86,8 @@ public class PlayerController : MonoBehaviour
         if (collision.CompareTag("Meteor"))
         {
             playerUi.Damaged(10f);
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            Destroy(collision.gameObject, 0.5f);
         }
     }
 }

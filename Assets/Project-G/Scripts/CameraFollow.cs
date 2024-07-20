@@ -13,6 +13,7 @@ public class CameraFollow : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = Vector3.SmoothDamp(transform.position, target.position + offset, ref velocity, smoothTime);
+        if (GameManager.Instance.gameState == GameState.InGame)
+            transform.position = Vector3.SmoothDamp(transform.position, target.position + offset, ref velocity, smoothTime);
     }
 }

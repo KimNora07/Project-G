@@ -20,13 +20,16 @@ public class HomingMeteor : MonoBehaviour
 
     private void Update()
     {
-        if (player != null)
+        if (GameManager.Instance.gameState == GameState.InGame)
         {
-            // 플레이어를 향해 이동
-            Vector2 direction = (player.position - transform.position).normalized;
-            transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
-        }
+            if (player != null)
+            {
+                // 플레이어를 향해 이동
+                Vector2 direction = (player.position - transform.position).normalized;
+                transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+            }
 
-        Destroy(this.gameObject, 5f);
+            Destroy(this.gameObject, 5f);
+        }
     }
 }

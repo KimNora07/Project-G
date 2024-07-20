@@ -20,12 +20,18 @@ public class Spawner : MonoBehaviour
     {
         currentMinSpawnTime = minSpawnTime;
         currentMaxSpawnTime = maxSpawnTime;
-        StartCoroutine(SpawnMeteorite());
+        
     }
 
     private void Update()
     {
-        AdjustSpawnTimeBasedOnScore();
+        if (GameManager.Instance.gameState == GameState.InGame)
+            AdjustSpawnTimeBasedOnScore();
+    }
+
+    public void StartSpawn()
+    {
+        StartCoroutine(SpawnMeteorite());
     }
 
     private IEnumerator SpawnMeteorite()
