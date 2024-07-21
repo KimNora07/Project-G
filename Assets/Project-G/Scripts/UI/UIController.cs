@@ -62,7 +62,7 @@ public class UIController : MonoBehaviour
         resultPanel.SetActive(true);
 
         // "게임오버" 텍스트 크기 축소 애니메이션
-        effectGameOver.Play(50, 177);
+        effectGameOver.Play(50, 100);
         // 현재 점수를 0부터 카운팅하는 애니메이션
         // 카운팅 애니메이션 종료 후 등급 Fade In 애니메이션 재생
         effectResultScore.Play(0, currentScore, effectResultGrade.FadeIn);
